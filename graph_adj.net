@@ -21,7 +21,11 @@
 20 "f2"
 21 "f3"
 22 "f4"
+<<<<<<< HEAD
 *Arcslist
+=======
+*Edgeslist
+>>>>>>> d33d9ce2916485c2541c0c0a092b32c390cbdca3
 1 4
 1 7
 1 8
