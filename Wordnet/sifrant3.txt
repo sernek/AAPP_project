@@ -1,0 +1,20 @@
+Razbitje:
+
+n - 1 
+v - 2 
+a - 3 
+r - 4 
+s - 5 
+
+Relacije:
+
+  1: hypernym pointers          
+  2: entailment pointers           (vkljucenost)
+  3: similar pointers       	   
+  4: member meronym pointers    
+  5: substance meronym pointers    (je del)    
+  6: part meronym pointers         (je del)      
+  7: cause pointers                (povzroca)    
+  8: grouped verb pointers      
+  9: attribute pointers         
+

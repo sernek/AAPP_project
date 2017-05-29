@@ -30,8 +30,8 @@ nodes_labels = dict(zip(nodes,labels))
 # Import data graph
 graph = nx.Graph()
 graph = nx.read_pajek("graph_adj2.net")
-nx.draw(graph)
-plt.savefig("graph2.png")
+#nx.draw(graph)
+#plt.savefig("graph2.png")
 
 
 # Import query graph and duplicate
@@ -278,7 +278,7 @@ def update_H_bi(R):
         i = [h for h in H if (nodes_labels.get(h)==l)]
         H_i.append(i)
 
-    #Dictionary bi with label-nodes
+    # Dictionary bi with label-nodes
     H_dict = dict(zip(H_label,H_i))
 
     return H_dict
