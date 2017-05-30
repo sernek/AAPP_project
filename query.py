@@ -29,16 +29,16 @@ nodes_labels = dict(zip(nodes,labels))
 
 # Import data graph
 graph = nx.Graph()
-graph = nx.read_pajek("graph_adj2.net")
+graph = nx.read_pajek("./Net/graph_adj2.net")
 #nx.draw(graph)
 #plt.savefig("graph2.png")
 
 
 # Import query graph and duplicate
 query = nx.Graph()
-query = nx.read_pajek("query2.net")
+query = nx.read_pajek("./Net/query2.net")
 q = nx.Graph()
-q = nx.read_pajek("query2.net")
+q = nx.read_pajek("./Net/query2.net")
 #nx.draw(query)
 #plt.savefig("query2.png")
 
@@ -145,6 +145,8 @@ def STwig_composition(q):
         # Remove u , v from S
         if( v in S ) : S.remove(v)
         if( u in S ) : S.remove(u)
+
+        # TODO: - use nx.isolates() for nodes with no neighbors
 
         for n in q.nodes_iter():
             if( len(q.neighbors(n)) == 0 and n in S ):
@@ -305,27 +307,3 @@ for t in T:
         Exploration.append(e)
     print "Labels explored:", Exploration
     print
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
