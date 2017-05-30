@@ -3,9 +3,12 @@ import networkx as nx
 
 G = nx.Graph()
 G = nx.read_pajek("graph_adj_M3.net")
+H = nx.Graph()
+H = nx.read_pajek("graph_adj_M4.net")
+
 a = nx.nodes(G)
 
-def nodelist( machine ):
+def nodeList( machine ):
     count = 0
     nodes = []
     with open ("graph_adj_"+ machine + ".net") as f:
@@ -49,12 +52,13 @@ def getLabel( nodename, machine ):
 
 
 
-list_node_M4 = nodelist("M4")
-list_node_M3 = nodelist("M3")
+list_node_M4 = nodeList("M4")
+list_node_M3 = nodeList("M3")
 
+m3 = nx.nodes(G)
+m4 = nx.nodes(H)
+
+mtot = m3 + m4
+print mtot
 allNodes = [(x, y) for x in list_node_M3 for y in list_node_M4]
-
-print allNodes[0]
-
-print getLabel("17","M3")
 
