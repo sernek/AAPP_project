@@ -46,69 +46,66 @@ edges= G.edges()
 # Number of machines (for scalability)
 K = 4
 
-# Remove edges of G_clu from edges of the different subgraphs
-for i in range(K):
-    G_i = G.subgraph(nbunch=n_i[i])
-    edges_i = G_i.edges()
-    G_clu.remove_edges_from(edges_i)
 
-# Remove edges with no neighbors
-G_clu.remove_nodes_from(nx.isolates(G_clu))
+# TODO: - put def
+# TODO: - insert parameters of the function
 
-# List of edges of G_clu
-clu_edge = G_clu.edges()
+def create_cluster():
 
-# List of couples i,j machines
-m_ij = []
+    # Remove edges of G_clu from edges of the different subgraphs
+    for i in range(K):
+        G_i = G.subgraph(nbunch=n_i[i])
+        edges_i = G_i.edges()
+        G_clu.remove_edges_from(edges_i)
 
-# List of couple a,b labels
-labels = []
+    # Remove edges with no neighbors
+    G_clu.remove_nodes_from(nx.isolates(G_clu))
 
-# Create couple (m_ij,labels) ( possible two or more lables for the same couple of machines)
-# TODO: - try to remove some for cycles
-for e in clu_edge:
-    for i in range(0,K):
-        for j in range(0,K):
-            if(i !=j and e[0] in n_i[i] and e[1] in n_i[j]):
+    # List of edges of G_clu
+    clu_edge = G_clu.edges()
 
-                # Labels of the nodes of the edge
-                a = nodes_labels.get(e[0])
-                b = nodes_labels.get(e[1])
+    # List of couples i,j machines
+    m_ij = []
 
-                # Useful to keep items in order
-                if(i<j):
-                    m_ij.append((i+1,j+1))
-                    labels.append([a,b])
-                else:
-                    m_ij.append((j+1,i+1))
-                    labels.append([b,a])
+    # List of couple a,b labels
+    labels = []
 
+    # Create couple (m_ij,labels) ( possible two or more lables for the same couple of machines)
+    # TODO: - try to remove some for cycles
+    for e in clu_edge:
+        for i in range(0,K):
+            for j in range(0,K):
+                if(i !=j and e[0] in n_i[i] and e[1] in n_i[j]):
 
-# List of list of couple of labels for all the couples of machines
-list_labels = []
+                    # Labels of the nodes of the edge
+                    a = nodes_labels.get(e[0])
+                    b = nodes_labels.get(e[1])
 
-# Create lists for the dictionary machines-labels
-for m in range(0,len(m_ij)):
-    # List of couples of labels for each couple of machines
-    list_labels_i = []
-    list_labels_i.append(labels[m])
-    for n in range(0,len(m_ij)):
-        if(m_ij[m] == m_ij[n] and m!=n):
-            list_labels_i.append(labels[n])
-    list_labels.append(list_labels_i)
-
-# Dictionary machines-list of labels
-machines_labels = dict(zip(m_ij,list_labels))
-
-print machines_labels
+                    # Useful to keep items in order
+                    if(i<j):
+                        m_ij.append((i+1,j+1))
+                        labels.append([a,b])
+                    else:
+                        m_ij.append((j+1,i+1))
+                        labels.append([b,a])
 
 
+    # List of list of couple of labels for all the couples of machines
+    list_labels = []
 
+    # Create lists for the dictionary machines-labels
+    for m in range(0,len(m_ij)):
+        # List of couples of labels for each couple of machines
+        list_labels_i = []
+        list_labels_i.append(labels[m])
+        for n in range(0,len(m_ij)):
+            if(m_ij[m] == m_ij[n] and m!=n):
+                list_labels_i.append(labels[n])
+        list_labels.append(list_labels_i)
 
+    # Dictionary machines-list of labels
+    machines_labels = dict(zip(m_ij,list_labels))
 
+    return machines_labels
 
-
-
-
-
-
+print create_cluster()

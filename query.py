@@ -25,8 +25,6 @@ for c in Clusters:
 nodes_labels = dict(zip(nodes,labels))
 
 
-
-
 # Import data graph
 graph = nx.Graph()
 graph = nx.read_pajek("./Net/graph_adj2.net")
