@@ -33,25 +33,25 @@ for c in Clusters:
 nodes_labels = dict(zip(nodes,labels))
 
 # Read initial graph
-G = nx.Graph()
-G = nx.read_pajek("./Net/graph_adj2.net")
+H = nx.Graph()
+H = nx.read_pajek("./Net/graph_adj2.net")
 
-# Useful for the creation of the graph with only edges beetween different machines
-G_clu = nx.Graph()
-G_clu = nx.read_pajek("./Net/graph_adj2.net")
 
 # List of edges of graph G
-edges= G.edges()
+#edges= H.edges()
 
 # Number of machines (for scalability)
-K = 4
+K = len(n_i)
 
 
 # TODO: - put def
 # TODO: - insert parameters of the function
+# G is the Graph and K is the number of machines
 
-def create_cluster():
+def create_cluster(G,K):
 
+    G_clu = nx.Graph(G)
+    
     # Remove edges of G_clu from edges of the different subgraphs
     for i in range(K):
         G_i = G.subgraph(nbunch=n_i[i])
@@ -108,4 +108,4 @@ def create_cluster():
 
     return machines_labels
 
-print create_cluster()
+print create_cluster(H,K)
