@@ -24,10 +24,10 @@ for c in Clusters:
 # Dictionary node-labels
 nodes_labels = dict(zip(nodes,labels))
 
-
+'''
 # Import data graph
-graph = nx.Graph()
-graph = nx.read_pajek("./Net/graph_adj2.net")
+graph_test = nx.Graph()
+graph_test = nx.read_pajek("./Net/graph_adj2.net")
 #nx.draw(graph)
 #plt.savefig("graph2.png")
 
@@ -39,7 +39,7 @@ q = nx.Graph()
 q = nx.read_pajek("./Net/query2.net")
 #nx.draw(query)
 #plt.savefig("query2.png")
-
+'''
 
 
 # STwig class: root,children
@@ -52,8 +52,6 @@ class STwig:
 
 
 
-# Set f-value to 1 (initial testing)
-f = 1
 
 # Decompose query into STWig and returns an ordered lists of STwig
 def STwig_composition(q):
@@ -63,6 +61,9 @@ def STwig_composition(q):
 
     S = []
     T = []
+
+    # Set f-value to 1 (initial testing)
+    f = 1
 
     f_v = f
     f_u = f
@@ -159,6 +160,7 @@ def STwig_composition(q):
 
 
 # Inizialization bi at first step
+# TODO: - fix global variables, maybe pass at each function Exploration and H_bi
 H_bi = dict()
 
 # List of explored labels (it contains multiple occurences for the same label -> it' not a problem"
@@ -166,7 +168,7 @@ Exploration = []
 
 
 # Check if bi are available for the root
-def check_bi_root(r):
+def check_bi_root(r,H_bi):
     bi = H_bi.get(r)
     if( r ):
         return bi
@@ -174,10 +176,7 @@ def check_bi_root(r):
 
 # TODO: Check this function!!!
 # Check if bi are available for the children and returns them
-def check_bi_child(children,L):
-    #H = list(set().union(*H_bi.values()))
-    #k = set(children) - set(H)
-    #bi = list(set(children) & set(k))
+def check_bi_child(children,L,Exploration,H_bi):
 
     # Binding informations
     bi = []
@@ -186,12 +185,11 @@ def check_bi_child(children,L):
 
         # bi for the label l
         bi_l = H_bi.get(l)
-        # If bi are not empty and the label is already "explored" by a previous query
 
+        # If bi are not empty and the label is already "explored" by a previous query
         if ( bi_l and l in H_bi):
             # Intersection between children of a node and bi
             bi_l = list(set(children) & set(bi_l))
-
         else:
             # If the label is not yet "explored" ?????????????
             if(l not in Exploration):
@@ -207,23 +205,23 @@ def check_bi_child(children,L):
 
 
 # TODO: - save results as STwig???
-#MatchSTwig function r: root, L: labels (add binding information)
-def MatchSTwig(r,L):
+#MatchSTwig function graph: graph r: root, L: labels H_bi: binding information (add binding information)
+def MatchSTwig(graph,r,L,H_bi):
 
     # Final results
     R = []
 
     # If there are some bi of the root, S is inizializated using bi,
     # else retrieving all the nodes with the label of the root
-    bi = check_bi_root(r)
+    bi = check_bi_root(r,H_bi)
     if( bi ):
         S = bi
     else:
         # All nodes with label equals to label of the root
-        S = [key for key in nodes_labels if nodes_labels.get(key)==r ]
+        S = [key for key in nodes_labels if nodes_labels.get(key)==r and key in graph.nodes()] # verify last par and key in graph.nodes()
 
 
-    print "Nodes with label: ", r, "->", S
+    #print "Nodes with label: ", r, "->", S
 
 
 
@@ -239,7 +237,7 @@ def MatchSTwig(r,L):
         # Check bi of the children
         # At first query we don't have bi
         if ( H_bi ):
-            children = check_bi_child(children,L)
+            children = check_bi_child(children,L,Exploration,H_bi)
 
         for l in L:
             # Children of n with label l in L
@@ -263,7 +261,7 @@ def MatchSTwig(r,L):
 
 
 # Update bi after the process of a new query
-def update_H_bi(R):
+def update_H_bi(R,H_bi):
 
     # List of new labels in R
     H = list(set().union(*R))
@@ -284,10 +282,9 @@ def update_H_bi(R):
     return H_dict
 
 
-
 # -------Test----------
 
-
+'''
 # STwig list
 T = STwig_composition(q)
 
@@ -295,7 +292,7 @@ T = STwig_composition(q)
 # Exploration
 for t in T:
     print "root:", t.root, "    label: ", t.label
-    R =  MatchSTwig(t.root,t.label)
+    R =  MatchSTwig(graph_test,t.root,t.label)
     print "results:", len(R) , "-->", R
     H_bi = update_H_bi(R)
     print "bi: ", H_bi
@@ -305,3 +302,5 @@ for t in T:
         Exploration.append(e)
     print "Labels explored:", Exploration
     print
+
+'''

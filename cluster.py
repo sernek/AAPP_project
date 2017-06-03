@@ -1,4 +1,11 @@
 import networkx as nx
+import matplotlib.pyplot as plt
+
+'''
+# Query graph
+query_test = nx.Graph()
+query_test = nx.read_pajek("./Net/query2.net")
+'''
 
 # Structure of the data graph
 A = ["a1","a2","a3"]
@@ -32,6 +39,7 @@ for c in Clusters:
 # Dictionary nodes-labels
 nodes_labels = dict(zip(nodes,labels))
 
+'''
 # Read initial graph
 H = nx.Graph()
 H = nx.read_pajek("./Net/graph_adj2.net")
@@ -42,7 +50,7 @@ H = nx.read_pajek("./Net/graph_adj2.net")
 
 # Number of machines (for scalability)
 K = len(n_i)
-
+'''
 
 # TODO: - put def
 # TODO: - insert parameters of the function
@@ -54,6 +62,7 @@ def create_cluster(G,K):
     
     # Remove edges of G_clu from edges of the different subgraphs
     for i in range(K):
+        # TODO: -check if the created graph is undirected or not
         G_i = G.subgraph(nbunch=n_i[i])
         edges_i = G_i.edges()
         G_clu.remove_edges_from(edges_i)
@@ -108,4 +117,46 @@ def create_cluster(G,K):
 
     return machines_labels
 
-print create_cluster(H,K)
+
+# It takes the dictionary machines_list labels(cluster) and the query graph
+# It returns a graph following the rules of the cluster graph
+def create_cluster_graph(cluster,query):
+
+    # Inizialization of the cluster graph
+    Cluster_graph = nx.Graph()
+    # List of edges of the cluster graph
+    clu_graph_edges = []
+
+    # TODO: - try to remove some for cycles
+
+    for comb in cluster:
+        for e in query.edges():
+            for c in cluster.get(comb):
+                # TODO: - try to modify the equal for edges
+                if ((e[0] == c[0] and e[1] == c[1] or (e[0] == c[1] and e[1] == c[0]))):
+                    clu_graph_edges.append(comb)
+
+    clu_graph_edges = list(set(clu_graph_edges))
+
+    # Create cluster graph starting from the useful edges
+    Cluster_graph.add_edges_from(clu_graph_edges)
+
+    return Cluster_graph
+
+
+#-------- Test -----------
+'''
+cluster_test = create_cluster(H,K)
+c_graph = create_cluster_graph(cluster_test,query_test)
+'''
+# For drawing
+#labels=nx.draw_networkx_labels(Cluster_graph,pos=nx.spring_layout(Cluster_graph))
+#nx.draw(Cluster_graph)
+#plt.savefig("./Net/clu_graph.png")
+
+
+
+
+
+
+

@@ -2,12 +2,14 @@ import networkx as nx
 import numpy as np
 import random
 
+'''
 # Query graph
 query_test = nx.Graph()
 query_test = nx.read_pajek("./Net/query2.net")
 
 # Test
 roots_test = ["d","c","b"]
+'''
 
 # Giving the query graph and the root-nodes,
 # it returns the root of the Head STwig
@@ -30,6 +32,7 @@ def headSTwig_selection(query,roots):
 
     # Fullfil M: computes all the shortest path
     # for each couple of nodes of the query graph
+    # TODO: - try to remove one for cycle
     for i in range(0,n):
         for j in range(0,n):
             # For testing
@@ -58,7 +61,7 @@ def headSTwig_selection(query,roots):
 
     return head_root
 
-print "root Head STwig: ",headSTwig_selection(query_test,roots_test)
+#print "root Head STwig: ",headSTwig_selection(query_test,roots_test)
 
 '''
 print M
