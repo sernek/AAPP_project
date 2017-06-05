@@ -218,7 +218,8 @@ def MatchSTwig(graph,r,L,H_bi):
         S = bi
     else:
         # All nodes with label equals to label of the root
-        S = [key for key in nodes_labels if nodes_labels.get(key)==r and key in graph.nodes()] # verify last par and key in graph.nodes()
+        S = [key for key in nodes_labels if nodes_labels.get(key)==r and key in graph.nodes()]
+        # verify last par and key in graph.nodes()
 
 
     #print "Nodes with label: ", r, "->", S

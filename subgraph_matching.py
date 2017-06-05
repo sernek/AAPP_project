@@ -3,7 +3,8 @@ import numpy as np
 import query as qr
 import cluster as cl
 import headSTwig as hst
-import load_set as ls
+from load_set import create_load_set
+import itertools
 
 #-------Test part-----------
 # Query graph
@@ -51,17 +52,30 @@ H = nx.read_pajek("./Net/graph_adj2.net")
 
 #-----------End Test Part------------
 
+
+def merge_subs(lst_of_lsts):
+    res = []
+    for row in lst_of_lsts:
+        for i, resrow in enumerate(res):
+            if row[0]==resrow[0]:
+                res[i] += row[1:]
+                break
+        else:
+            res.append(row)
+    return res
+
+
 K = len(n_i)
+
+# List with index of machines
+list_machines = list(range(1,K+1))
+
 cluster_test = cl.create_cluster(H,K)
 c_graph = cl.create_cluster_graph(cluster_test,query_test)
-
-# Inizialization bi at first step
-H_bi = dict()
 
 T = qr.STwig_composition(q)
 
 roots = []
-
 for t in range(0,len(T)):
     roots.append(T[t].root)
 
@@ -79,7 +93,7 @@ for m in range(0,K):
     H_bi = dict()
 
     print m+1
-    graph_i = H.subgraph(nbunch=n_i[m])
+    graph_i = H.subgraph(nbunch = n_i[m])
 
     # List of explored labels (it contains multiple occurences for the same label -> it' not a problem"
     Exploration = []
@@ -100,10 +114,28 @@ for m in range(0,K):
 
     R.append(R_i)
 
+
+
 for m in range(0,K):
+
+    R_m = []
     for t in range(0,len(roots)):
-        F_kt = ls.load_set(m,roots[t],head_root,query_test,c_graph,n_i)
-        print F_kt
+        R_k_qi = R[m][t]
+        F_kt = create_load_set(m+1,roots[t],head_root,query_test,c_graph,list_machines)
+        R_qi = []
+        for k in F_kt:
+            r = R[k-1][t]
+            for r_i in r:
+                R_qi.append(r_i)
+        R_k_qi = R_k_qi + R_qi
+        R_m.append(R_k_qi)
+
+    R_m = list(itertools.chain.from_iterable(R_m))
+    print R_m
+
+
+
+
 
 
 
