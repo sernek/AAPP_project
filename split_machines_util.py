@@ -26,8 +26,9 @@ def splitMachines( path, K):
 
 # -------Test----------
 
-#result = splitMachines("./Net/wordnet3.net",4)
+result = splitMachines("./Wordnet/wordnet3.net",4)
 
-#for i in result:
-#    print nx.nodes(i)
+for i in result:
+    print "Machine " + i + " nodes :"
+    nx.nodes(i) 
 
