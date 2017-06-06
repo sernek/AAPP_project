@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 from itertools import product
 import node_label_util
 

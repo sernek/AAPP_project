@@ -1,0 +1,10 @@
+*Vertices 4
+1 "a"
+2 "b"
+3 "c"
+4 "d"
+*Edgeslist
+1 2
+1 3
+2 4
+3 4
