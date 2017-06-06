@@ -2,10 +2,9 @@ import networkx as nx
 import random 
 
 
-
-
 #Splits in K machines the net given by the attribute path
 #and returns a list of K machines containing the splitted net
+
 def splitMachines( path, K):
  
     net = [[] for i in range(K)]
@@ -26,10 +25,9 @@ def splitMachines( path, K):
 
 
 # -------Test----------
-'''
-result = splitMachines("./Net/graph_adj2.net",4)
 
-for i in result:
-    print nx.nodes(i)
+#result = splitMachines("./Net/wordnet3.net",4)
 
-'''
+#for i in result:
+#    print nx.nodes(i)
+

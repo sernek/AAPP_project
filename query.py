@@ -1,46 +1,12 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import product
+import node_label_util
 
 
-# Structure of the data graph
-A = ["a1","a2","a3"]
-B = ["b1","b2","b3","b4"]
-C = ["c1","c2","c3","c4"]
-D = ["d1","d2","d3"]
-E = ["e1","e2","e3"]
-F = ["f1","f2","f3","f4"]
-
-Clusters = [A,B,C,D,E,F]
-clu_name = ["a","b","c","d","e","f"]
-j=0
-nodes = []
-labels = []
-for c in Clusters:
-    for n in c:
-        nodes.append(n)
-        labels.append(clu_name[j])
-    j += 1
-# Dictionary node-labels
-nodes_labels = dict(zip(nodes,labels))
-
-'''
-# Import data graph
-graph_test = nx.Graph()
-graph_test = nx.read_pajek("./Net/graph_adj2.net")
-#nx.draw(graph)
-#plt.savefig("graph2.png")
-
-
-# Import query graph and duplicate
-query = nx.Graph()
-query = nx.read_pajek("./Net/query2.net")
-q = nx.Graph()
-q = nx.read_pajek("./Net/query2.net")
-#nx.draw(query)
-#plt.savefig("query2.png")
-'''
-
+# Dictionary nodes_labels
+# TODO: - modify this
+nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
 
 # STwig class: root,children
 class STwig:
@@ -49,8 +15,6 @@ class STwig:
         self.label = label if label is not None else label
     def __repr__(self):
         return "<%s,%s>" % (self.root, self.label)
-
-
 
 
 # Decompose query into STWig and returns an ordered lists of STwig
@@ -161,7 +125,7 @@ def STwig_composition(q):
 
 # Inizialization bi at first step
 # TODO: - fix global variables, maybe pass at each function Exploration and H_bi
-H_bi = dict()
+#H_bi = dict()
 
 # List of explored labels (it contains multiple occurences for the same label -> it' not a problem"
 Exploration = []
@@ -283,25 +247,4 @@ def update_H_bi(R,H_bi):
     return H_dict
 
 
-# -------Test----------
 
-'''
-# STwig list
-T = STwig_composition(q)
-
-
-# Exploration
-for t in T:
-    print "root:", t.root, "    label: ", t.label
-    R =  MatchSTwig(graph_test,t.root,t.label)
-    print "results:", len(R) , "-->", R
-    H_bi = update_H_bi(R)
-    print "bi: ", H_bi
-    Exploration.append(t.root)
-
-    for e in t.label:
-        Exploration.append(e)
-    print "Labels explored:", Exploration
-    print
-
-'''

@@ -26,8 +26,7 @@ def nodeLabelDict( path ):
 
 # -------Test----------
 
-'''
-dic = nodeLabelDict("./Wordnet/wordnet3")
-print dic["entity"]
 
-'''
+#dic = nodeLabelDict("./Wordnet/wordnet3")
+#print dic
+
