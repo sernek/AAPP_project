@@ -11,9 +11,9 @@ import node_label_util
 
 # Query graph
 query_test = nx.Graph()
-query_test = nx.read_pajek("./Net/query3.net")
+query_test = nx.read_pajek("./Net/query4.net")
 q = nx.Graph()
-q = nx.read_pajek("./Net/query3.net")
+q = nx.read_pajek("./Net/query4.net")
 
 
 # Division of nodes into different machines
