@@ -1,4 +1,5 @@
 import networkx as nx
+
 '''
 # Query graph
 query_test = nx.Graph()
@@ -22,7 +23,7 @@ n_i = [1,2,3,4]
 # It returns the load set for a machine k for a query with root q_t_root
 # using the head STwig (root) head, the query graph, the cluster graph and the list of machines
 # TODO: - maybe it's better to remove some parameters
-def load_set(k,q_t_root,head,query,cluster_graph,n_i):
+def create_load_set(k,q_t_root,head,query,cluster_graph,n_i):
 
     # Load set
     F_kt = []
@@ -37,7 +38,7 @@ def load_set(k,q_t_root,head,query,cluster_graph,n_i):
                 F_kt.append(t)
     return F_kt
 
-#print load_set(1,"b",head_test,query_test,Cluster_graph_test)
+# print create_load_set(1,"b",head_test,query_test,Cluster_graph_test,n_i)
 
 
 

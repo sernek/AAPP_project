@@ -2,10 +2,9 @@ import networkx as nx
 import random 
 
 
-
-
 #Splits in K machines the net given by the attribute path
 #and returns a list of K machines containing the splitted net
+
 def splitMachines( path, K):
  
     net = [[] for i in range(K)]
