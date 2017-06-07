@@ -1,19 +1,7 @@
 import networkx as nx
+import node_label_util
 
 '''
-# Query graph
-query_test = nx.Graph()
-query_test = nx.read_pajek("./Net/query2.net")
-'''
-
-# Structure of the data graph
-A = ["a1","a2","a3"]
-B = ["b1","b2","b3","b4"]
-C = ["c1","c2","c3","c4"]
-D = ["d1","d2","d3"]
-E = ["e1","e2","e3"]
-F = ["f1","f2","f3","f4"]
-
 # Division of nodes into different machines
 n1 = ["a1","a2","b1","c1","d1","e1","f1"]
 n2 = ["a3","b2","b3","c2","d2","e2","f2"]
@@ -23,45 +11,22 @@ n4 = ["b4","c3","e4","f4"]
 # List of the machines
 n_i = [n1,n2,n3,n4]
 
-# Creation of dictionary node-label
-Clusters = [A,B,C,D,E,F]
-clu_name = ["a","b","c","d","e","f"]
-
-j=0
-nodes = []
-labels = []
-for c in Clusters:
-    for n in c:
-        nodes.append(n)
-        labels.append(clu_name[j])
-    j += 1
 # Dictionary nodes-labels
-nodes_labels = dict(zip(nodes,labels))
-
-'''
-# Read initial graph
-H = nx.Graph()
-H = nx.read_pajek("./Net/graph_adj2.net")
-
-
-# List of edges of graph G
-#edges= H.edges()
-
-# Number of machines (for scalability)
-K = len(n_i)
+nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
 '''
 
 # TODO: - put def
 # TODO: - insert parameters of the function
-# G is the Graph and K is the number of machines
-
-def create_cluster(G,K):
+# TODO: - K can be removed -> we can use len(n_i)
+# G is the Graph , K is the number of machines, n_i is the list of the nodes of the machines
+# and nodes_labels is the dictionary nodes-labels
+def create_cluster(G,K,n_i,nodes_labels):
 
     G_clu = nx.Graph(G)
     
     # Remove edges of G_clu from edges of the different subgraphs
     for i in range(K):
-        # TODO: -check if the created graph is undirected or not
+        # TODO: - check if the created graph is undirected or not
         G_i = G.subgraph(nbunch=n_i[i])
         edges_i = G_i.edges()
         G_clu.remove_edges_from(edges_i)
@@ -148,14 +113,4 @@ def create_cluster_graph(cluster,query):
 cluster_test = create_cluster(H,K)
 c_graph = create_cluster_graph(cluster_test,query_test)
 '''
-# For drawing
-#labels=nx.draw_networkx_labels(Cluster_graph,pos=nx.spring_layout(Cluster_graph))
-#nx.draw(Cluster_graph)
-#plt.savefig("./Net/clu_graph.png")
-
-
-
-
-
-
 

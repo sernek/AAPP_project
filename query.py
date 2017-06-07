@@ -7,6 +7,7 @@ import node_label_util
 # TODO: - modify this
 nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
 
+
 # STwig class: root,children
 class STwig:
     def __init__(self, root, label=None):
@@ -88,35 +89,49 @@ def STwig_composition(q):
             q.remove_edge(v , n)
             #q.remove_edge(n , v)
 
-        if( len(q.neighbors(u)) > 0 ):
 
-            # Remove edges in T_u from q
-            neighbors_u = q.neighbors(u)
-            for n in neighbors_u:
-                q.remove_edge(u , n)
-                #q.remove_edge(n , u)
+        # If it already exists a "STwig", I choose it and I stop the selection
+        nodes_with_children = [n for n in q.nodes_iter() if len(q.neighbors(n))>0]
+        if( len(q.edges()) == 2 and len(nodes_with_children) == 3 ):
 
-            # Add T_u to T
-            T_i = STwig(u,neighbors_u)
+            nodes_with_2_children = [n for n in q.nodes_iter() if len(q.neighbors(n))==2]
+            children = list(set(nodes_with_children) - set(nodes_with_2_children))
+            T_i = STwig(nodes_with_2_children[0],children)
             T.append(T_i)
 
-            # Add neighbors of u in S
-            for neigh_u in neighbors_u:
-                S.append(neigh_u)
+            break
 
-        # Remove u , v from S
-        if( v in S ) : S.remove(v)
-        if( u in S ) : S.remove(u)
+        else:
 
-        # TODO: - use nx.isolates() for nodes with no neighbors
+            if( len(q.neighbors(u)) > 0 ):
 
-        for n in q.nodes_iter():
-            if( len(q.neighbors(n)) == 0 and n in S ):
-                # Remove multiple occurences of the same node
-                S = [item for item in S if item != n]
+                # Remove edges in T_u from q
+                neighbors_u = q.neighbors(u)
+                for n in neighbors_u:
+                    q.remove_edge(u , n)
+                    #q.remove_edge(n , u)
 
-        # When the number of edges is zero, the algorithm can finish
-        if(q.number_of_edges()==0): break
+                # Add T_u to T
+                T_i = STwig(u,neighbors_u)
+                T.append(T_i)
+
+                # Add neighbors of u in S
+                for neigh_u in neighbors_u:
+                    S.append(neigh_u)
+
+            # Remove u , v from S
+            if( v in S ) : S.remove(v)
+            if( u in S ) : S.remove(u)
+
+            # TODO: - use nx.isolates() for nodes with no neighbors
+
+            for n in q.nodes_iter():
+                if( len(q.neighbors(n)) == 0 and n in S ):
+                    # Remove multiple occurences of the same node
+                    S = [item for item in S if item != n]
+
+            # When the number of edges is zero, the algorithm can finish
+            if(q.number_of_edges()==0): break
 
     # Return the list of the ordered STwig
     return T

@@ -17,7 +17,6 @@ q = nx.read_pajek("./Net/query5.net")
 
 len_query = len(query_test.nodes())
 
-
 # Division of nodes into different machines
 n1 = ["a1","a2","b1","c1","d1","e1","f1"]
 n2 = ["a3","b2","b3","c2","d2","e2","f2"]
@@ -34,8 +33,8 @@ H = nx.read_pajek("./Net/graph_adj2.net")
 
 #-----------End Test Part------------
 
+# Dictionary node_label for all the graph
 nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
-
 
 # STwig class: root,children
 class STwig:
@@ -46,47 +45,54 @@ class STwig:
         return "<%s,%s>" % (self.root, self.label)
 
 
-
-def merge_subs(lst_of_lsts):
-    res = []
-    for row in lst_of_lsts:
-        for i, resrow in enumerate(res):
-            if row[0]==resrow[0]:
-                res[i] += row[1:]
-                break
-        else:
-            res.append(row)
-    return res
-
-
+# Number of machines
 K = len(n_i)
 
 # List with index of machines
 list_machines = list(range(1,K+1))
 
-cluster_test = cl.create_cluster(H,K)
+# Cluster graph creaction c-graph
+cluster_test = cl.create_cluster(H,K,n_i,nodes_labels)
 c_graph = cl.create_cluster_graph(cluster_test,query_test)
 
+# Query decomposition and STWig ordering
 T = qr.STwig_composition(q)
 print T
 
+# Roots of the STWig
 roots = []
 for t in range(0,len(T)):
     roots.append(T[t].root)
 
-print roots
+#print roots
 
+# Root of the head- STwgi
 head_root = hst.headSTwig_selection(query_test,roots)
 
-print head_root
+#print head_root
 
+
+# Graph with only edges between machines
+G_clu = nx.Graph(H)
+# Remove edges of G_clu from edges of the different subgraphs
+for i in range(K):
+    G_i = H.subgraph(nbunch=n_i[i])
+    edges_i = G_i.edges()
+    G_clu.remove_edges_from(edges_i)
+# Remove edges with no neighbors
+G_clu.remove_nodes_from(nx.isolates(G_clu))
+
+
+
+# Exploration: for each machines it collects the partial result for each subquery and it saves all the result
+# in a list of lists called R (a list for each machine containing the list of the union of all the partial results)
 R = []
-# Exploration
 for m in range(0,K):
 
     R_i = []
     H_bi = dict()
 
+    # Graph with only the nodes of the interested machine
     graph_i = H.subgraph(nbunch = n_i[m])
 
     # List of explored labels (it contains multiple occurences for the same label -> it' not a problem"
@@ -109,14 +115,20 @@ for m in range(0,K):
     R.append(R_i)
 
 
+
+# Load set and Join: each machine collects the result from the correct machine containg in R and then
+# it joins the results
 for m in range(0,K):
 
     print m+1
 
+    # Load set
     R_m = []
     for t in range(0,len(roots)):
         R_k_qi = R[m][t]
         F_kt = create_load_set(m+1,roots[t],head_root,query_test,c_graph,list_machines)
+        #print t
+        #print F_kt
         R_qi = []
         for k in F_kt:
             r = R[k-1][t]
@@ -135,59 +147,19 @@ for m in range(0,K):
 
     print "JOIN"
 
+    # Join
     Results = []
 
     for i in R_m:
         join = set(i)
         exp = []
         for j in R_m:
-            if( nodes_labels.get(i[0]) != nodes_labels.get(j[0]) and set(i) & set(j) and nodes_labels.get(j[0]) not in exp ):
+            #if( nodes_labels.get(i[0]) != nodes_labels.get(j[0]) and set(i) & set(j) and nodes_labels.get(j[0]) not in exp ):
+            if( nodes_labels.get(i[0]) != nodes_labels.get(j[0]) and nodes_labels.get(j[0]) not in exp ):
                 exp.append(nodes_labels.get(j[0]))
                 join = list ( set(join) | set(j) )
-            if(len(join) == len_query  and join not in Results):
+            #if(len(join) == len_query and join not in Results):
                 Results.append(join)
     print Results
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    '''
-    R_stwig = []
-    for r in R_m:
-        if(len(r)>1):
-            stwig = STwig(r[0],r[1:])
-        else:
-            stwig = STwig(r[0],[])
-        R_stwig.append(stwig)
-
-    #print R_stwig
-
-
-    Join = []
-    for i in R_stwig:
-        for j in R_stwig:
-            join = []
-            if(j.root in i.label):
-                join = [i.root] + i.label + j.label
-                Join.append(list(set(join)))
-
-    #print Join
-    '''
-
-
-
-
-
-
-
+    print
 
