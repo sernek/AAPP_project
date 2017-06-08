@@ -2,14 +2,6 @@ import networkx as nx
 import numpy as np
 import random
 
-'''
-# Query graph
-query_test = nx.Graph()
-query_test = nx.read_pajek("./Net/query2.net")
-
-# Test
-roots_test = ["d","c","b"]
-'''
 
 # Giving the query graph and the root-nodes,
 # it returns the root of the Head STwig
@@ -62,14 +54,6 @@ def headSTwig_selection(query,roots):
     return head_root
 
 #print "root Head STwig: ",headSTwig_selection(query_test,roots_test)
-
-'''
-print M
-print max_M
-print head_id
-print head_root
-'''
-
 
 
 

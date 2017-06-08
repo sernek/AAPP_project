@@ -6,6 +6,7 @@ import node_label_util
 # Dictionary nodes_labels
 # TODO: - modify this
 nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
+#nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
 
 
 # STwig class: root,children
@@ -203,7 +204,7 @@ def MatchSTwig(graph,r,L,H_bi):
     #print "Nodes with label: ", r, "->", S
 
 
-
+    R_n = []
     for n in S:
         # Children of the root with labels in L
         S_l = []
@@ -235,6 +236,18 @@ def MatchSTwig(graph,r,L,H_bi):
 
         # Add partial results to final resutls
         R = R + R_n
+
+    '''
+    # TODO: - in case of child nodes with no root, we search this nodes and we add them to the partial results
+    for l in L:
+        child = [key for key in nodes_labels if nodes_labels.get(key) == l and key in graph.nodes()]
+        for c in child:
+            neigh_label = [nodes_labels.get(c_i) for c_i in graph.neighbors(c)]
+            if(r not in neigh_label):
+                    R_n.append(child)
+    '''
+
+
 
     return R
 

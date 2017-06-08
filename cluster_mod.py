@@ -10,7 +10,7 @@ import node_label_util
 def create_cluster(G,K,n_i,nodes_labels):
 
     G_clu = nx.Graph(G)
-    
+
     # Remove edges of G_clu from edges of the different subgraphs
     for i in range(K):
         # TODO: - check if the created graph is undirected or not
@@ -31,23 +31,25 @@ def create_cluster(G,K,n_i,nodes_labels):
     labels = []
 
     # Create couple (m_ij,labels) (possible two or more lables for the same couple of machines)
-    # TODO: - try to remove some for cycles
+    # There are only two for loops !!!
     for e in clu_edge:
         for i in range(0,K):
-            for j in range(0,K):
-                if(i !=j and e[0] in n_i[i] and e[1] in n_i[j]):
+            if(e[0] in n_i[i]): m = i
+            if(e[1] in n_i[i]): n = i
+        # The nodes have to be in two different machines
+        if( m != n ):
 
-                    # Labels of the nodes of the edge
-                    a = nodes_labels.get(e[0])
-                    b = nodes_labels.get(e[1])
+            # Labels of the nodes of the edge
+            a = nodes_labels.get(e[0])
+            b = nodes_labels.get(e[1])
 
-                    # Useful to keep items in order
-                    if(i<j):
-                        m_ij.append((i+1,j+1))
-                        labels.append([a,b])
-                    else:
-                        m_ij.append((j+1,i+1))
-                        labels.append([b,a])
+            # Useful to keep items in order
+            if(m<n):
+                m_ij.append((m+1,n+1))
+                labels.append([a,b])
+            else:
+                m_ij.append((n+1,m+1))
+                labels.append([b,a])
 
     # List of list of couple of labels for all the couples of machines
     list_labels = []
