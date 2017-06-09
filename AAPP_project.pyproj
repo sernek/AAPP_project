@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{b95cde04-2d08-4ed9-965b-ddd2e6b75983}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>cluster_graph.py</StartupFile>
+    <StartupFile>subgraph_matching.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,20 +21,55 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="graph.png" />
-    <Content Include="graph_adj_M3.net" />
-    <Content Include="graph_adj_M4.net" />
-    <Content Include="path.png" />
-    <Content Include="query.png" />
+    <Content Include="Net\graph.net" />
+    <Content Include="Net\graph.png" />
+    <Content Include="Net\graph2.png" />
+    <Content Include="Net\graph_adj.net" />
+    <Content Include="Net\graph_adj2.clu" />
+    <Content Include="Net\graph_adj2.net" />
+    <Content Include="Net\graph_adj_M3.clu" />
+    <Content Include="Net\graph_adj_M3.net" />
+    <Content Include="Net\graph_adj_M4.clu" />
+    <Content Include="Net\graph_adj_M4.net" />
+    <Content Include="Net\list.net" />
+    <Content Include="Net\path.png" />
+    <Content Include="Net\query.net" />
+    <Content Include="Net\query.png" />
+    <Content Include="Net\query2.net" />
+    <Content Include="Net\query3.net" />
+    <Content Include="Net\query4.net" />
+    <Content Include="Net\query5.net" />
+    <Content Include="Net\splitted.net" />
+    <Content Include="Net\testnet.net" />
+    <Content Include="Net\wordnet3.clu" />
+    <Content Include="Net\wordnet3.net" />
+    <Content Include="Net\wordnettest.net" />
+    <Content Include="README.md" />
     <Content Include="Wordnet\sifrant3.txt" />
+    <Content Include="Wordnet\wordnet3.clu" />
+    <Content Include="Wordnet\wordnet3.net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cluster.py" />
     <Compile Include="cluster_graph.py" />
+    <Compile Include="cluster_mod.py" />
+    <Compile Include="edge_machines.py" />
+    <Compile Include="headSTwig.py" />
+    <Compile Include="label_node_util.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="load_set.py" />
+    <Compile Include="node_label_util.py" />
     <Compile Include="query.py" />
-    <Compile Include="test.py" />
-    <Compile Include="test2.py" />
+    <Compile Include="split_machines_util.py" />
+    <Compile Include="subgraph_matching.py" />
+    <Compile Include="subgraph_matching_mod.py" />
+    <Compile Include="Tests\test.py" />
+    <Compile Include="Tests\test2.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Net\" />
+    <Folder Include="Tests\" />
     <Folder Include="Wordnet" />
   </ItemGroup>
   <ItemGroup>
