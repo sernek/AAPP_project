@@ -94,7 +94,6 @@ def STwig_composition(q):
         # If it already exists a "STwig", I choose it and I stop the selection
         nodes_with_children = [n for n in q.nodes_iter() if len(q.neighbors(n))>0]
         if( len(q.edges()) == 2 and len(nodes_with_children) == 3 ):
-
             nodes_with_2_children = [n for n in q.nodes_iter() if len(q.neighbors(n))==2]
             children = list(set(nodes_with_children) - set(nodes_with_2_children))
             T_i = STwig(nodes_with_2_children[0],children)
@@ -184,7 +183,8 @@ def check_bi_child(children,L,Exploration,H_bi):
 
 
 # TODO: - save results as STwig???
-#MatchSTwig function graph: graph r: root, L: labels H_bi: binding information (add binding information)
+
+# MatchSTwig function graph: graph r: root, L: labels H_bi: binding information (add binding information)
 def MatchSTwig(graph,r,L,H_bi):
 
     # Final results
@@ -237,8 +237,9 @@ def MatchSTwig(graph,r,L,H_bi):
         # Add partial results to final resutls
         R = R + R_n
 
-    '''
+
     # TODO: - in case of child nodes with no root, we search this nodes and we add them to the partial results
+    '''
     for l in L:
         child = [key for key in nodes_labels if nodes_labels.get(key) == l and key in graph.nodes()]
         for c in child:
