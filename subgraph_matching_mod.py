@@ -7,6 +7,7 @@ from load_set import create_load_set
 import itertools
 import node_label_util
 import split_machines_util
+import join
 
 #-------Test part-----------
 
@@ -140,15 +141,15 @@ for m in range(0,K):
     for t in range(0,len(roots)):
         R_k_qi = R[m][t]
         F_kt = create_load_set(m+1,roots[t],head_root,query_test,c_graph,list_machines)
-        print t
-        print F_kt
+        #print t
+        #print F_kt
         R_qi = []
         for k in F_kt:
-            print k-1
-            print t
+            #print k-1
+            #print t
             r = R[k-1][t]
-            print r
-            print R[k-1][t]
+            #print r
+            #print R[k-1][t]
             for r_i in r:
                 #print r_i
                 #print n_i[m]
@@ -162,7 +163,7 @@ for m in range(0,K):
                             #print R[k-1][t]
                             #print neigh
                             #if(nodes_labels.get(neigh) not in R[k-1][t]):
-                            edge = edge + [neigh]
+                            edge = [neigh] + edge
                                 #print "edge", edge
                             R_qi.append(edge)
         R_k_qi = R_k_qi + R_qi
@@ -170,27 +171,34 @@ for m in range(0,K):
 
     R_m = list(itertools.chain.from_iterable(R_m))
 
-    print R[m]
+    R_mf = []
+    for root in roots:
+        r_root = []
+        for r in R_m:
+            if(nodes_labels.get(r[0])==root):
+                r_root.append(r)
+        R_mf.append(r_root)
 
-    print R_m
+    #print "R_mf",R_mf
+    for i in range(0,len(R_mf)-1):
+        if(i == 0 ):
+            Results,Total_edges = join.join_edge(R_mf[0], R_mf[1])
+        else:
+            Results,Total_edges = join.join_edge(Results, R_mf[i+1])
 
-    print
+    #print Results
+    #print Total_edges
+    for r in range(0,len(Total_edges)):
+        print Results[r]
+        print Total_edges[r]
+        count = 0
+        for e in query_test.edges():
+            print e
+            if([e[0],e[1]] in Total_edges[r] or [e[1],e[0]] in Total_edges[r]):
+                count += 1
+        if(count == len(query_test.edges())):
+            print Results[r]
 
-    print "JOIN"
 
-    # Join
-    Results = []
 
-    for i in R_m:
-        join = set(i)
-        exp = []
-        for j in R_m:
-            if( nodes_labels.get(i[0]) != nodes_labels.get(j[0]) and set(i) & set(j) and nodes_labels.get(j[0]) not in exp ):
-            #if( nodes_labels.get(i[0]) != nodes_labels.get(j[0]) and nodes_labels.get(j[0]) not in exp):
-                exp.append(nodes_labels.get(j[0]))
-                join = list ( set(join) | set(j) )
-            if(len(join) == len_query and join not in Results):
-                Results.append(join)
-    print Results
-    print
 

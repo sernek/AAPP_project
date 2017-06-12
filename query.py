@@ -30,9 +30,6 @@ def STwig_composition(q):
     # Set f-value to 1 (initial testing)
     f = 1
 
-    f_v = f
-    f_u = f
-
     # TODO: - modify exit of the cycle
     # TODO: - reduce lines of code of the two conditions
 
