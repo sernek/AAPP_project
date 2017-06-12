@@ -1,12 +1,15 @@
 import networkx as nx
 from itertools import product
-import node_label_util
+import node_label_util, label_node_util
+
 
 
 # Dictionary nodes_labels
 # TODO: - modify this
 nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
+labels_nodes = label_node_util.labelNodeDict("./Net/graph_adj2")
 #nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
+#labels_nodes = label_node_util.labelNodeDict("./Wordnet/wordnet3")
 
 
 # STwig class: root,children
@@ -43,10 +46,9 @@ def STwig_composition(q):
                 v = e[0]
                 u = e[1]
 
-                # TODO: - add popularity of label to f
-
-                f_v = len(q.neighbors(v))/float(f)
-                f_u = len(q.neighbors(u))/float(f)
+                # TODO: - add popularity of label to f             
+                f_v = len(q.neighbors(v))/float(len(labels_nodes[nodes_labels[v]]))
+                f_u = len(q.neighbors(u))/float(len(labels_nodes[nodes_labels[f]]))
                 f_vu = f_v + f_u
                 if(f_vu > f_max):
                     f_max = f_vu
