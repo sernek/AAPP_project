@@ -27,6 +27,6 @@ def nodeLabelDict( path ):
 # -------Test----------
 
 
-#dic = nodeLabelDict("./Wordnet/wordnet3")
+dic = nodeLabelDict("./Wordnet/wordnet3")
 #print dic
 
