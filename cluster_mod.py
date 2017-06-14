@@ -7,13 +7,13 @@ import node_label_util
 # TODO: - K can be removed -> we can use len(n_i)
 # G is the Graph , K is the number of machines, n_i is the list of the nodes of the machines
 # and nodes_labels is the dictionary nodes-labels
-def create_cluster(G,K,n_i,nodes_labels):
+def create_cluster(G,n_i,nodes_labels):
 
+    K = len(n_i)
     G_clu = nx.Graph(G)
 
     # Remove edges of G_clu from edges of the different subgraphs
     for i in range(K):
-        # TODO: - check if the created graph is undirected or not
         G_i = G.subgraph(nbunch=n_i[i])
         edges_i = G_i.edges()
         G_clu.remove_edges_from(edges_i)
@@ -31,14 +31,13 @@ def create_cluster(G,K,n_i,nodes_labels):
     labels = []
 
     # Create couple (m_ij,labels) (possible two or more lables for the same couple of machines)
-    # There are only two for loops !!!
     for e in clu_edge:
         for i in range(0,K):
             if(e[0] in n_i[i]): m = i
             if(e[1] in n_i[i]): n = i
+
         # The nodes have to be in two different machines
         if( m != n ):
-
             # Labels of the nodes of the edge
             a = nodes_labels.get(e[0])
             b = nodes_labels.get(e[1])

@@ -19,19 +19,30 @@ def headSTwig_selection(query,roots):
         id = nodes.index(r)
         roots_id.append(id)
 
+    '''
+
     # Distance Matrix
     M = np.zeros(shape=(n,n))
 
     # Fullfil M: computes all the shortest path
     # for each couple of nodes of the query graph
     # TODO: - try to remove one for cycle
+
     for i in range(0,n):
         for j in range(0,n):
             # For testing
-            if(i<j): # it's a simmetric matrix
+            if( i<j ): # it's a simmetric matrix
                 d = nx.shortest_path_length(query,nodes[i],nodes[j])
                 M[i][j] = d  # + random.randint(0,5)
                 M[j][i] = M[i][j]
+
+    # We are interested only in distance between root-nodes
+    M = M[roots_id,:]
+    M = M[:, roots_id]
+    '''
+
+    # Distance matrix between all pair of nodes in the query
+    M = nx.floyd_warshall_numpy(query,nodes)
 
     # We are interested only in distance between root-nodes
     M = M[roots_id,:]

@@ -27,7 +27,7 @@ def join_results(R1,R2):
                 #print "join",join
             #if(len(join) == len_query):
                 Results.append(join)
-    print Results
+    #print Results
 
     return Results
 
@@ -43,7 +43,7 @@ def join_edge(R1,R2):
             if((set(i) & set(j)) and len(not_common_label) == len(set(not_common_label))):
                 # order of Stwig is modified
                 join = list ( set(i) | set(j) )
-                #index_rot = .....
+                #index_root = j.index()
                 new_edges = [[nodes_labels.get(j[0]),nodes_labels.get(j[b])] for b in range(1,len(j))]
                 edges = edges + new_edges
                 #print "join",join

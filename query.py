@@ -1,6 +1,6 @@
-import networkx as nx
 from itertools import product
 import node_label_util, label_node_util
+from STwig import STwig
 
 
 
@@ -12,15 +12,6 @@ labels_nodes = label_node_util.labelNodeDict("./Net/graph_adj2")
 #labels_nodes = label_node_util.labelNodeDict("./Wordnet/wordnet3")
 
 
-# STwig class: root,children
-class STwig:
-    def __init__(self, root, label=None):
-        self.root = root
-        self.label = label if label is not None else label
-    def __repr__(self):
-        return "<%s,%s>" % (self.root, self.label)
-
-
 # Decompose query into STWig and returns an ordered lists of STwig
 def STwig_composition(q):
 
@@ -30,13 +21,10 @@ def STwig_composition(q):
     S = []
     T = []
 
-    # Set f-value to 1 (initial testing)
-    f = 1
-
     # TODO: - modify exit of the cycle
     # TODO: - reduce lines of code of the two conditions
 
-    for j in range(10):
+    while( q.number_of_edges()!=0 ):
 
         f_max = 0
         # If S is empty
@@ -45,10 +33,8 @@ def STwig_composition(q):
             for e in q.edges_iter():
                 v = e[0]
                 u = e[1]
-
-                # TODO: - add popularity of label to f             
-                f_v = len(q.neighbors(v))/float(len(labels_nodes[nodes_labels[v]]))
-                f_u = len(q.neighbors(u))/float(len(labels_nodes[nodes_labels[f]]))
+                f_v = len(q.neighbors(v))/float(len(labels_nodes.get(v)))
+                f_u = len(q.neighbors(u))/float(len(labels_nodes.get(u)))
                 f_vu = f_v + f_u
                 if(f_vu > f_max):
                     f_max = f_vu
@@ -59,8 +45,8 @@ def STwig_composition(q):
                 v = e[0]
                 u = e[1]
                 if(v in S):
-                    f_v = len(q.neighbors(v))
-                    f_u = len(q.neighbors(u))
+                    f_v = len(q.neighbors(v))/float(len(labels_nodes.get(v)))
+                    f_u = len(q.neighbors(u))/float(len(labels_nodes.get(u)))
                     f_vu = f_v + f_u
                     if(f_vu > f_max):
                         f_max = f_vu
@@ -77,16 +63,19 @@ def STwig_composition(q):
 
         # Add neighbors of v in S
         neighbors_v = q.neighbors(v)
-        for neigh_v in neighbors_v:
-            S.append(neigh_v)
+        S.extend(neighbors_v)
+        #for neigh_v in neighbors_v:
+        #    S.append(neigh_v)
 
         # Add T_v to T
         T_i = STwig(v,neighbors_v)
         T.append(T_i)
 
         # Remove edges in T_v from q
-        for n in neighbors_v:
-            q.remove_edge(v , n)
+        edges_remove = [(v,n) for n in neighbors_v]
+        q.remove_edges_from(edges_remove)
+        #for n in neighbors_v:
+        #    q.remove_edge(v , n)
             #q.remove_edge(n , v)
 
 
@@ -106,17 +95,20 @@ def STwig_composition(q):
 
                 # Remove edges in T_u from q
                 neighbors_u = q.neighbors(u)
-                for n in neighbors_u:
-                    q.remove_edge(u , n)
+                edges_remove = [(u,n) for n in neighbors_u]
+                q.remove_edges_from(edges_remove)
+                #for n in neighbors_u:
+                #    q.remove_edge(u , n)
                     #q.remove_edge(n , u)
 
                 # Add T_u to T
                 T_i = STwig(u,neighbors_u)
                 T.append(T_i)
 
+                S.extend(neighbors_u)
                 # Add neighbors of u in S
-                for neigh_u in neighbors_u:
-                    S.append(neigh_u)
+                #for neigh_u in neighbors_u:
+                #    S.append(neigh_u)
 
             # Remove u , v from S
             if( v in S ) : S.remove(v)
@@ -130,7 +122,7 @@ def STwig_composition(q):
                     S = [item for item in S if item != n]
 
             # When the number of edges is zero, the algorithm can finish
-            if(q.number_of_edges()==0): break
+            #if(q.number_of_edges()==0): break
 
     # Return the list of the ordered STwig
     return T
@@ -168,7 +160,7 @@ def check_bi_child(children,L,Exploration,H_bi):
             # Intersection between children of a node and bi
             bi_l = list(set(children) & set(bi_l))
         else:
-            # If the label is not yet "explored" ?????????????
+            # If the label is not yet "explored"
             if(l not in Exploration):
                 bi_l = [c for c in children if nodes_labels.get(c)==l ]
 
@@ -198,10 +190,6 @@ def MatchSTwig(graph,r,L,H_bi):
         # All nodes with label equals to label of the root
         S = [key for key in nodes_labels if nodes_labels.get(key)==r and key in graph.nodes()]
         # verify last par and key in graph.nodes()
-
-
-    #print "Nodes with label: ", r, "->", S
-
 
     R_n = []
     for n in S:
@@ -246,8 +234,6 @@ def MatchSTwig(graph,r,L,H_bi):
             if(r not in neigh_label):
                     R_n.append(child)
     '''
-
-
 
     return R
 

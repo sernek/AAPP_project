@@ -8,6 +8,7 @@ import itertools
 import node_label_util
 import split_machines_util
 import join
+from STwig import STwig
 
 #-------Test part-----------
 
@@ -48,14 +49,6 @@ H = nx.read_pajek("./Net/graph_adj2.net")
 nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
 #nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
 
-# STwig class: root,children
-class STwig:
-    def __init__(self, root, label=None):
-        self.root = root
-        self.label = label if label is not None else label
-    def __repr__(self):
-        return "<%s,%s>" % (self.root, self.label)
-
 
 # Number of machines
 K = len(n_i)
@@ -65,7 +58,7 @@ list_machines = list(range(1,K+1))
 
 print "Creation cluster graph"
 # Cluster graph creaction c-graph
-cluster_test = cl.create_cluster(H,K,n_i,nodes_labels)
+cluster_test = cl.create_cluster(H,n_i,nodes_labels)
 c_graph = cl.create_cluster_graph(cluster_test,query_test)
 print c_graph.edges()
 
@@ -85,7 +78,6 @@ for t in range(0,len(T)):
 head_root = hst.headSTwig_selection(query_test,roots)
 
 #print head_root
-
 
 # Graph with only edges between machines
 G_clu = nx.Graph(H)
@@ -110,24 +102,24 @@ for m in range(0,K):
     # Graph with only the nodes of the interested machine
     graph_i = H.subgraph(nbunch = n_i[m])
 
-    # List of explored labels (it contains multiple occurences for the same label -> it' not a problem"
+    # List of explored labels
     Exploration = []
 
     # Exploration
     for t in T:
-        #print "root:", t.root, "    label: ", t.label
         R_qt =  qr.MatchSTwig(graph_i,t.root,t.label,H_bi)
-        #print "results:", len(R) , "-->", R
         H_bi = qr.update_H_bi(R_qt, H_bi)
 
         R_i.append(R_qt)
-        #print "bi: ", H_bi
         Exploration.append(t.root)
 
         for e in t.label:
             Exploration.append(e)
 
     R.append(R_i)
+
+
+
 
 print "Load set and Join"
 # Load set and Join: each machine collects the result from the correct machine containg in R and then
@@ -139,37 +131,52 @@ for m in range(0,K):
     # Load set
     R_m = []
     for t in range(0,len(roots)):
+
         R_k_qi = R[m][t]
         F_kt = create_load_set(m+1,roots[t],head_root,query_test,c_graph,list_machines)
-        #print t
-        #print F_kt
         R_qi = []
+
+
         for k in F_kt:
-            #print k-1
-            #print t
             r = R[k-1][t]
-            #print r
-            #print R[k-1][t]
+            print r
             for r_i in r:
-                #print r_i
-                #print n_i[m]
                 neigh_clu = [n for n in r_i if n in G_clu.nodes()]
-                #print neigh_clu
+                print "neigh_clu", neigh_clu
+                #near = [G_clu.neighbors(c) for c in neigh_clu]
+
+
                 for c in neigh_clu:
+
+
+                    neigh = G_clu.neighbors(c)
+                    near = [n for n in neigh if n in n_i[m]]
+                    edges = [(c,l) for l in near]
+                    print edges
+                    R_qi.extend(edges)
+                    print R_qi
+                    '''
+
+
+
+
+                    print c
                     for neigh in G_clu.neighbors(c):
+                        print neigh
                         if neigh in n_i[m]:
-                            #print neigh
                             edge = [c]
-                            #print R[k-1][t]
-                            #print neigh
                             #if(nodes_labels.get(neigh) not in R[k-1][t]):
                             edge = [neigh] + edge
+                            print "edge",edge
                                 #print "edge", edge
                             R_qi.append(edge)
+                    '''
+
         R_k_qi = R_k_qi + R_qi
         R_m.append(R_k_qi)
 
     R_m = list(itertools.chain.from_iterable(R_m))
+   
 
     R_mf = []
     for root in roots:
@@ -189,15 +196,13 @@ for m in range(0,K):
     #print Results
     #print Total_edges
     for r in range(0,len(Total_edges)):
-        print Results[r]
-        print Total_edges[r]
         count = 0
         for e in query_test.edges():
-            print e
+            #print e
             if([e[0],e[1]] in Total_edges[r] or [e[1],e[0]] in Total_edges[r]):
                 count += 1
-        if(count == len(query_test.edges())):
-            print Results[r]
+        #if(count == len(query_test.edges())):
+        #    print Results[r]
 
 
 
