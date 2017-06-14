@@ -2,7 +2,7 @@ import networkx as nx
 import random
 
 G = nx.Graph()
-G = nx.read_pajek("./Wordnet/wordnet3.net")
+G = nx.read_pajek("./Wordnet/wordnet3_adj2.net")
 nodes = []
 
 for node in G.nodes_iter():

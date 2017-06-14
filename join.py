@@ -32,24 +32,28 @@ def join_results(R1,R2):
     return Results
 
 
-def join_edge(R1,R2):
+def join_edge(R1, R1_edges, R2):
+
     Results = []
-    Total_edges = []
+    Results_edges = []
+    iter = 0
     for i in R1:
-        edges = [[nodes_labels.get(i[0]),nodes_labels.get(i[n])] for n in range(1,len(i))]
+        #print "i",i
+        edges = R1_edges[iter]
         for j in R2:
+            edges = R1_edges[iter]
+            #print "j",j
             not_common = set(i) ^ set(j)
             not_common_label = [nodes_labels.get(nc) for nc in not_common]
             if((set(i) & set(j)) and len(not_common_label) == len(set(not_common_label))):
                 # order of Stwig is modified
                 join = list ( set(i) | set(j) )
-                #index_root = j.index()
+                #print "join",join
                 new_edges = [[nodes_labels.get(j[0]),nodes_labels.get(j[b])] for b in range(1,len(j))]
                 edges = edges + new_edges
-                #print "join",join
-            #if(len(join) == len_query):
+                #print "edges",edges
                 Results.append(join)
-        Total_edges.append(edges)
-    #print Results,Total_edges
+                Results_edges.append(edges)
+        iter +=1
 
-    return Results,Total_edges
+    return Results,Results_edges

@@ -1,6 +1,6 @@
-splitted = open('graph_adj.net', 'w')
+splitted = open('../Wordnet/wordnet3_adj2.net', 'w')
 
-with open('graph.net') as fp:
+with open('../Wordnet/wordnet3_adj.net') as fp:
     for line in fp:
         split = line.split(' ')
         for i in range(len(split)-1):

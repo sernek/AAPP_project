@@ -6,10 +6,10 @@ from STwig import STwig
 
 # Dictionary nodes_labels
 # TODO: - modify this
-nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
-labels_nodes = label_node_util.labelNodeDict("./Net/graph_adj2")
-#nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
-#labels_nodes = label_node_util.labelNodeDict("./Wordnet/wordnet3")
+#nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
+#labels_nodes = label_node_util.labelNodeDict("./Net/graph_adj2")
+nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
+labels_nodes = label_node_util.labelNodeDict("./Wordnet/wordnet3")
 
 
 # Decompose query into STWig and returns an ordered lists of STwig
@@ -143,7 +143,6 @@ def check_bi_root(r,H_bi):
         return bi
 
 
-# TODO: Check this function!!!
 # Check if bi are available for the children and returns them
 def check_bi_child(children,L,Exploration,H_bi):
 

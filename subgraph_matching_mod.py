@@ -14,20 +14,20 @@ from STwig import STwig
 
 # Query graph
 query_test = nx.Graph()
-query_test = nx.read_pajek("./Net/query3.net")
+query_test = nx.read_pajek("./Net/querywordnet.net")
 q = nx.Graph()
-q = nx.read_pajek("./Net/query3.net")
+q = nx.read_pajek("./Net/querywordnet.net")
 
 len_query = len(query_test.nodes())
 
-'''
-print "Graphs creation"
-graphs = split_machines_util.splitMachines("./Net/wordnet3.net",10)
-n_i = []
-for g in graphs[0:2]:
-    n_i.append(g.nodes())
-'''
 
+print "Graphs creation"
+graphs = split_machines_util.splitMachines("./Net/test.net",4)
+n_i = []
+for g in graphs:
+    n_i.append(g.nodes())
+
+'''
 # Division of nodes into different machines
 n1 = ["a1","a2","b1","c1","d1","e1","f1"]
 n2 = ["a3","b2","b3","c2","d2","e2","f2"]
@@ -36,18 +36,20 @@ n4 = ["b4","c3","e4","f4"]
 
 # List of the machines
 n_i = [n1,n2,n3,n4]
-
+'''
 
 # Read initial graph
 H = nx.Graph()
-#H = nx.read_pajek("./Wordnet/wordnet3.net")
-H = nx.read_pajek("./Net/graph_adj2.net")
+H = nx.read_pajek("./Net/test.net")
+print "nodes = ",len(H.nodes())
+print "edges = ",len(H.edges())
+#H = nx.read_pajek("./Net/graph_adj2.net")
 
 #-----------End Test Part------------
 
 # Dictionary node_label for all the graph
-nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
-#nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
+#nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
+nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
 
 
 # Number of machines
@@ -77,7 +79,7 @@ for t in range(0,len(T)):
 # Root of the head- STwig
 head_root = hst.headSTwig_selection(query_test,roots)
 
-#print head_root
+print "head", head_root
 
 # Graph with only edges between machines
 G_clu = nx.Graph(H)
@@ -139,10 +141,8 @@ for m in range(0,K):
 
         for k in F_kt:
             r = R[k-1][t]
-            print r
             for r_i in r:
                 neigh_clu = [n for n in r_i if n in G_clu.nodes()]
-                print "neigh_clu", neigh_clu
                 #near = [G_clu.neighbors(c) for c in neigh_clu]
 
 
@@ -152,9 +152,7 @@ for m in range(0,K):
                     neigh = G_clu.neighbors(c)
                     near = [n for n in neigh if n in n_i[m]]
                     edges = [(c,l) for l in near]
-                    print edges
                     R_qi.extend(edges)
-                    print R_qi
                     '''
 
 
@@ -186,23 +184,29 @@ for m in range(0,K):
                 r_root.append(r)
         R_mf.append(r_root)
 
-    #print "R_mf",R_mf
-    for i in range(0,len(R_mf)-1):
-        if(i == 0 ):
-            Results,Total_edges = join.join_edge(R_mf[0], R_mf[1])
-        else:
-            Results,Total_edges = join.join_edge(Results, R_mf[i+1])
+    Results_edges = []
 
-    #print Results
-    #print Total_edges
-    for r in range(0,len(Total_edges)):
+    print "R_mf",R_mf
+    for i in range(0,len(R_mf)-1):
+        if(i == 0):
+            edges_r = []
+            for r in R_mf[0]:
+                edges = [[nodes_labels.get(r[0]),nodes_labels.get(r[n])] for n in range(1,len(r))]
+                edges_r.append(edges)
+            Results,Results_edges = join.join_edge(R_mf[0],edges_r, R_mf[1])
+        else:
+            Results,Results_edges = join.join_edge(Results, Results_edges, R_mf[i+1])
+
+    #print "Results", Results
+    #print Results_edges
+
+    for r in range(0,len(Results_edges)):
         count = 0
         for e in query_test.edges():
-            #print e
-            if([e[0],e[1]] in Total_edges[r] or [e[1],e[0]] in Total_edges[r]):
+            if([e[0],e[1]] in Results_edges[r] or [e[1],e[0]] in Results_edges[r]):
                 count += 1
-        #if(count == len(query_test.edges())):
-        #    print Results[r]
+        if(count == len(query_test.edges())):
+            print Results[r]
 
 
 
