@@ -141,8 +141,8 @@ for m in range(0,K):
     for t in range(0,len(roots)):
         R_k_qi = R[m][t]
         F_kt = create_load_set(m+1,roots[t],head_root,query_test,c_graph,list_machines)
-        #print t
-        #print F_kt
+        print t
+        print F_kt
         R_qi = []
         for k in F_kt:
             r = R[k-1][t]
@@ -153,13 +153,13 @@ for m in range(0,K):
 
     R_m = list(itertools.chain.from_iterable(R_m))
 
-    print R[m]
+    #print R[m]
 
-    print R_m
+    #print R_m
 
-    print
+    #print
 
-    print "JOIN"
+    #print "JOIN"
 
     # Join
     Results = []
@@ -174,6 +174,5 @@ for m in range(0,K):
                 join = list ( set(join) | set(j) )
             #if(len(join) == len_query and join not in Results):
                 Results.append(join)
-    print Results
-    print
+    #print Results
 
