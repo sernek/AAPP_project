@@ -187,7 +187,7 @@ for m in range(0,K):
 
     Results_edges = []
 
-    #print "R_mf",R_mf
+    print "R_mf",len(R_mf)
     for i in range(0,len(R_mf)-1):
         if(i == 0):
             edges_r = []

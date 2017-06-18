@@ -11,7 +11,10 @@ import split_machines_util
 #-------Test part-----------
 
 # Dictionary node_label for all the graph
-nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
+#nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
+nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
+
+
 
 def join_results(R1,R2):
 
