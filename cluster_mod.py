@@ -2,9 +2,6 @@ import networkx as nx
 import node_label_util
 
 
-# TODO: - put def
-# TODO: - insert parameters of the function
-# TODO: - K can be removed -> we can use len(n_i)
 # G is the Graph , K is the number of machines, n_i is the list of the nodes of the machines
 # and nodes_labels is the dictionary nodes-labels
 def create_cluster(G,n_i,nodes_labels):

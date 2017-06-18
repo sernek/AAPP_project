@@ -9,8 +9,12 @@ import node_label_util
 import split_machines_util
 import join
 from STwig import STwig
+from datetime import datetime
 
 #-------Test part-----------
+
+
+startTime = datetime.now()
 
 # Query graph
 query_test = nx.Graph()
@@ -22,7 +26,7 @@ len_query = len(query_test.nodes())
 
 
 print "Graphs creation"
-graphs = split_machines_util.splitMachines("./Net/test.net",4)
+graphs = split_machines_util.splitMachines("./Net/test.net",2)
 n_i = []
 for g in graphs:
     n_i.append(g.nodes())
@@ -41,8 +45,6 @@ n_i = [n1,n2,n3,n4]
 # Read initial graph
 H = nx.Graph()
 H = nx.read_pajek("./Net/test.net")
-print "nodes = ",len(H.nodes())
-print "edges = ",len(H.edges())
 #H = nx.read_pajek("./Net/graph_adj2.net")
 
 #-----------End Test Part------------
@@ -96,14 +98,12 @@ print "Exploration"
 # Exploration: for each machines it collects the partial result for each subquery and it saves all the result
 # in a list of lists called R (a list for each machine containing the list of the union of all the partial results)
 R = []
-for m in range(0,K):
+#for m in range(0,K):
+
+def exploration(T,graph_i):
 
     R_i = []
     H_bi = dict()
-
-    # Graph with only the nodes of the interested machine
-    graph_i = H.subgraph(nbunch = n_i[m])
-
     # List of explored labels
     Exploration = []
 
@@ -111,16 +111,20 @@ for m in range(0,K):
     for t in T:
         R_qt =  qr.MatchSTwig(graph_i,t.root,t.label,H_bi)
         H_bi = qr.update_H_bi(R_qt, H_bi)
-
         R_i.append(R_qt)
         Exploration.append(t.root)
-
         for e in t.label:
             Exploration.append(e)
 
+    return R_i
+
+
+#Exploration
+R = []
+for m in range(0,K):
+    graph_i = H.subgraph(nbunch = n_i[m])
+    R_i = exploration(T,graph_i)
     R.append(R_i)
-
-
 
 
 print "Load set and Join"
@@ -153,11 +157,8 @@ for m in range(0,K):
                     near = [n for n in neigh if n in n_i[m]]
                     edges = [(c,l) for l in near]
                     R_qi.extend(edges)
+                    
                     '''
-
-
-
-
                     print c
                     for neigh in G_clu.neighbors(c):
                         print neigh
@@ -186,7 +187,7 @@ for m in range(0,K):
 
     Results_edges = []
 
-    print "R_mf",R_mf
+    #print "R_mf",R_mf
     for i in range(0,len(R_mf)-1):
         if(i == 0):
             edges_r = []
@@ -211,3 +212,4 @@ for m in range(0,K):
 
 
 
+print datetime.now() - startTime

@@ -21,7 +21,6 @@ def STwig_composition(q):
     S = []
     T = []
 
-    # TODO: - modify exit of the cycle
     # TODO: - reduce lines of code of the two conditions
 
     while( q.number_of_edges()!=0 ):
@@ -171,8 +170,6 @@ def check_bi_child(children,L,Exploration,H_bi):
 
     return bi
 
-
-# TODO: - save results as STwig???
 
 # MatchSTwig function graph: graph r: root, L: labels H_bi: binding information (add binding information)
 def MatchSTwig(graph,r,L,H_bi):
