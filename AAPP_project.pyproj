@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{b95cde04-2d08-4ed9-965b-ddd2e6b75983}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>generate_subgraph_util.py</StartupFile>
+    <StartupFile>subgraph_matching_mod.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
