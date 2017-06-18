@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{b95cde04-2d08-4ed9-965b-ddd2e6b75983}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>subgraph_matching.py</StartupFile>
+    <StartupFile>generate_subgraph_util.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -44,6 +44,7 @@
     <Content Include="Net\wordnet3.clu" />
     <Content Include="Net\wordnet3.net" />
     <Content Include="Net\wordnettest.net" />
+    <Content Include="Patents\patents.net" />
     <Content Include="README.md" />
     <Content Include="Wordnet\sifrant3.txt" />
     <Content Include="Wordnet\wordnet3.clu" />
@@ -51,10 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cluster.py" />
-    <Compile Include="cluster_graph.py" />
     <Compile Include="cluster_mod.py" />
     <Compile Include="edge_machines.py" />
+    <Compile Include="generate_subgraph_util.py" />
     <Compile Include="headSTwig.py" />
+    <Compile Include="join.py" />
     <Compile Include="label_node_util.py">
       <SubType>Code</SubType>
     </Compile>
@@ -62,13 +64,18 @@
     <Compile Include="node_label_util.py" />
     <Compile Include="query.py" />
     <Compile Include="split_machines_util.py" />
+    <Compile Include="STwig.py" />
     <Compile Include="subgraph_matching.py" />
     <Compile Include="subgraph_matching_mod.py" />
     <Compile Include="Tests\test.py" />
     <Compile Include="Tests\test2.py" />
+    <Compile Include="util.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Net\" />
+    <Folder Include="Patents\" />
     <Folder Include="Tests\" />
     <Folder Include="Wordnet" />
   </ItemGroup>

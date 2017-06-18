@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ProfilingTarget xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectTarget>
+    <TargetProject>b95cde04-2d08-4ed9-965b-ddd2e6b75983</TargetProject>
+    <FriendlyName>AAPP_project</FriendlyName>
+  </ProjectTarget>
+  <Reports>
+    <Report>
+      <Filename>C:\Users\Nicolas\AppData\Local\Temp\AAPP_project1_20170618.vsp</Filename>
+    </Report>
+  </Reports>
+</ProfilingTarget>
