@@ -121,7 +121,7 @@ def STwig_composition(q):
                     S = [item for item in S if item != n]
 
             # When the number of edges is zero, the algorithm can finish
-            #if(q.number_of_edges()==0): break
+            if(q.number_of_edges()==0): break
 
     # Return the list of the ordered STwig
     return T

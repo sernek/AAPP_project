@@ -10,19 +10,20 @@ import split_machines_util
 
 #-------Test part-----------
 
+
 # Query graph
 query_test = nx.Graph()
-query_test = nx.read_pajek("./Net/query2.net")
+query_test = nx.read_pajek("./Net/querywordnet.net")
 q = nx.Graph()
-q = nx.read_pajek("./Net/query2.net")
+q = nx.read_pajek("./Net/querywordnet.net")
 
 len_query = len(query_test.nodes())
 
-'''
+
 print "Graphs creation"
-graphs = split_machines_util.splitMachines("./Net/wordnet3.net",10)
+graphs = split_machines_util.splitMachines("./Net/wordnet3.net",4)
 n_i = []
-for g in graphs[0:2]:
+for g in graphs:
     n_i.append(g.nodes())
 '''
 
@@ -34,18 +35,18 @@ n4 = ["b4","c3","e4","f4"]
 
 # List of the machines
 n_i = [n1,n2,n3,n4]
-
+'''
 
 # Read initial graph
 H = nx.Graph()
-#H = nx.read_pajek("./Wordnet/wordnet3.net")
-H = nx.read_pajek("./Net/graph_adj2.net")
+H = nx.read_pajek("./Wordnet/wordnet3.net")
+#H = nx.read_pajek("./Net/graph_adj2.net")
 
 #-----------End Test Part------------
 
 # Dictionary node_label for all the graph
-nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
-#nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
+#nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
+nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
 
 # STwig class: root,children
 class STwig:

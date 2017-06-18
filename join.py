@@ -16,6 +16,7 @@ nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
 
 
 
+
 def join_results(R1,R2):
 
     Results = []

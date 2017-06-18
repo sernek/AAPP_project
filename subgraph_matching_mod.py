@@ -187,19 +187,22 @@ for m in range(0,K):
 
     Results_edges = []
 
-    print "R_mf",len(R_mf)
+    Results = []
+    #print "R_mf",R_mf
     for i in range(0,len(R_mf)-1):
+        print i
         if(i == 0):
             edges_r = []
             for r in R_mf[0]:
+                print r
                 edges = [[nodes_labels.get(r[0]),nodes_labels.get(r[n])] for n in range(1,len(r))]
                 edges_r.append(edges)
             Results,Results_edges = join.join_edge(R_mf[0],edges_r, R_mf[1])
         else:
             Results,Results_edges = join.join_edge(Results, Results_edges, R_mf[i+1])
 
-    #print "Results", Results
-    #print Results_edges
+    #print "Results", len(Results)
+    #print len(Results_edges)
 
     for r in range(0,len(Results_edges)):
         count = 0
