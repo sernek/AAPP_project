@@ -17,7 +17,6 @@ def labelNodeDict( path ):
                     count+=1
                     continue
                 if count == 2:
-                    print "ho fatto break" 
                     break
       
                 
