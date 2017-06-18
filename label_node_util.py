@@ -6,7 +6,7 @@ def labelNodeDict( path ):
     dic = {}
 
     with open (path + ".net") as net:
-        with open (path + ".clu") as clu:
+        with open (path + "_adj.clu") as clu:
             nodes = net.readlines()
             del nodes[0]
             nodes.reverse()

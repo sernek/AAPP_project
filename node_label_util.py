@@ -7,7 +7,7 @@ def nodeLabelDict( path ):
     dic = {}
 
     with open (path + ".net") as net:
-        with open (path + ".clu") as clu:
+        with open (path + "_adj.clu") as clu:
             for line in net:
                 split = line.split(' ')
                 if "*" in split[0]:
