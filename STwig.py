@@ -1,5 +1,6 @@
-
-# STwig class: root,children
+'''
+STwig class: root,label children
+'''
 class STwig:
     def __init__(self, root, label=None):
         self.root = root

@@ -1,3 +1,7 @@
+'''
+Selection of the head STwig using the query and the roots of the STwigs
+'''
+
 import networkx as nx
 import numpy as np
 import random

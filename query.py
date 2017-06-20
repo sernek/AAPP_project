@@ -1,3 +1,7 @@
+'''
+Contains all the function necessary to decompose the query and find STwigs in a data grah
+'''
+
 from itertools import product
 import node_label_util, label_node_util
 from STwig import STwig
@@ -5,9 +9,6 @@ from STwig import STwig
 
 
 # Dictionary nodes_labels
-# TODO: - modify this
-#nodes_labels = node_label_util.nodeLabelDict("./Net/graph_adj2")
-#labels_nodes = label_node_util.labelNodeDict("./Net/graph_adj2")
 nodes_labels = node_label_util.nodeLabelDict("./Wordnet/wordnet3")
 labels_nodes = label_node_util.labelNodeDict("./Wordnet/wordnet3")
 
@@ -17,16 +18,11 @@ def STwig_composition(q):
 
     # Edge(node1,node2) with max f(v)+f(u) values
     edge_max = []
-
     S = []
     T = []
-
-    # TODO: - reduce lines of code of the two conditions
-
-    while( q.number_of_edges()!=0 ):
+    while( len(q.edges())!=0 ):
 
         f_max = 0
-        # If S is empty
         if(not S):
             # Pick an edge (v, u) such that f(u) + f(v) is the largest
             for e in q.edges_iter():
@@ -59,90 +55,63 @@ def STwig_composition(q):
              v = edge_max[1]
              u = edge_max[0]
 
-
         # Add neighbors of v in S
         neighbors_v = q.neighbors(v)
         S.extend(neighbors_v)
-        #for neigh_v in neighbors_v:
-        #    S.append(neigh_v)
-
         # Add T_v to T
         T_i = STwig(v,neighbors_v)
         T.append(T_i)
-
         # Remove edges in T_v from q
         edges_remove = [(v,n) for n in neighbors_v]
         q.remove_edges_from(edges_remove)
-        #for n in neighbors_v:
-        #    q.remove_edge(v , n)
-            #q.remove_edge(n , v)
 
+        if( len(q.neighbors(u)) > 0 ):
 
-        # If it already exists a "STwig", I choose it and I stop the selection
-        nodes_with_children = [n for n in q.nodes_iter() if len(q.neighbors(n))>0]
-        if( len(q.edges()) == 2 and len(nodes_with_children) == 3 ):
-            nodes_with_2_children = [n for n in q.nodes_iter() if len(q.neighbors(n))==2]
-            children = list(set(nodes_with_children) - set(nodes_with_2_children))
-            T_i = STwig(nodes_with_2_children[0],children)
+            # Remove edges in T_u from q
+            neighbors_u = q.neighbors(u)
+            edges_remove = [(u,n) for n in neighbors_u]
+            q.remove_edges_from(edges_remove)
+
+            # Add T_u to T
+            T_i = STwig(u,neighbors_u)
             T.append(T_i)
 
-            break
+            # Add neighbors of u in S
+            S.extend(neighbors_u)
 
-        else:
 
-            if( len(q.neighbors(u)) > 0 ):
 
-                # Remove edges in T_u from q
-                neighbors_u = q.neighbors(u)
-                edges_remove = [(u,n) for n in neighbors_u]
-                q.remove_edges_from(edges_remove)
-                #for n in neighbors_u:
-                #    q.remove_edge(u , n)
-                    #q.remove_edge(n , u)
+        # Remove u , v from S
+        if( v in S ) : S.remove(v)
+        if( u in S ) : S.remove(u)
 
-                # Add T_u to T
-                T_i = STwig(u,neighbors_u)
-                T.append(T_i)
 
-                S.extend(neighbors_u)
-                # Add neighbors of u in S
-                #for neigh_u in neighbors_u:
-                #    S.append(neigh_u)
+        for n in q.nodes_iter():
+            if( len(q.neighbors(n)) == 0 and n in S ):
+                S = [item for item in S if item != n]
 
-            # Remove u , v from S
-            if( v in S ) : S.remove(v)
-            if( u in S ) : S.remove(u)
-
-            # TODO: - use nx.isolates() for nodes with no neighbors
-
-            for n in q.nodes_iter():
-                if( len(q.neighbors(n)) == 0 and n in S ):
-                    # Remove multiple occurences of the same node
-                    S = [item for item in S if item != n]
-
-            # When the number of edges is zero, the algorithm can finish
-            if(q.number_of_edges()==0): break
+        # When the number of edges is zero, the algorithm can finish
+        if(len(q.edges())==0): break
 
     # Return the list of the ordered STwig
     return T
 
 
 # Inizialization bi at first step
-# TODO: - fix global variables, maybe pass at each function Exploration and H_bi
 #H_bi = dict()
 
 # List of explored labels (it contains multiple occurences for the same label -> it' not a problem"
 Exploration = []
 
 
-# Check if bi are available for the root
+# Checks if bi are available for the root
 def check_bi_root(r,H_bi):
     bi = H_bi.get(r)
     if( r ):
         return bi
 
 
-# Check if bi are available for the children and returns them
+# Checks if bi are available for the children and returns them
 def check_bi_child(children,L,Exploration,H_bi):
 
     # Binding informations
@@ -194,7 +163,7 @@ def MatchSTwig(graph,r,L,H_bi):
         # Partial results for each node in S (with root)
         R_n = []
 
-        #Children of a node in S
+        # Children of a node in S
         children = graph.neighbors(n)
 
         # Check bi of the children
@@ -212,24 +181,12 @@ def MatchSTwig(graph,r,L,H_bi):
         R_i = [item for item in product(*S_l)]
 
         # Add root to partial results
-        # TODO: lambda function
         for i in R_i:
             i = [n] + list(i)
             R_n.append(i)
 
         # Add partial results to final resutls
         R = R + R_n
-
-
-    # TODO: - in case of child nodes with no root, we search this nodes and we add them to the partial results
-    '''
-    for l in L:
-        child = [key for key in nodes_labels if nodes_labels.get(key) == l and key in graph.nodes()]
-        for c in child:
-            neigh_label = [nodes_labels.get(c_i) for c_i in graph.neighbors(c)]
-            if(r not in neigh_label):
-                    R_n.append(child)
-    '''
 
     return R
 

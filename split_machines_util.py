@@ -1,15 +1,17 @@
-import networkx as nx 
+'''Splits in K machines the net given by the attribute path
+and returns a list of K machines containing the splitted net
+'''
+
+import networkx as nx
 import random 
 
 
-#Splits in K machines the net given by the attribute path
-#and returns a list of K machines containing the splitted net
+
 
 def splitMachines( path, K):
  
     net = [[] for i in range(K)]
     machines = []
-    
 
     G = nx.read_pajek(path)
 
@@ -22,14 +24,3 @@ def splitMachines( path, K):
 
     return machines
 
-
-
-# -------Test----------
-
-'''
-result = splitMachines("./Wordnet/wordnet3.net",4)
-
-for i in result:
-    print "Machine " + i + " nodes :"
-    nx.nodes(i) 
-'''

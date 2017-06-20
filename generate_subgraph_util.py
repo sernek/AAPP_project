@@ -1,4 +1,7 @@
-import networkx as nx 
+'''
+Simple script for dvide the sample nodes for a very large graph
+'''
+import networkx as nx
 import random
 
 G = nx.Graph()

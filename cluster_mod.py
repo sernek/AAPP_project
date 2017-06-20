@@ -1,3 +1,7 @@
+'''
+Creates the cluster graph starting from the datagraph and the query graph
+'''
+
 import networkx as nx
 import node_label_util
 
@@ -75,12 +79,9 @@ def create_cluster_graph(cluster,query):
     # List of edges of the cluster graph
     clu_graph_edges = []
 
-    # TODO: - try to remove some for cycles
-
     for comb in cluster:
         for e in query.edges():
             for c in cluster.get(comb):
-                # TODO: - try to modify the equal for edges
                 if ((e[0] == c[0] and e[1] == c[1] or (e[0] == c[1] and e[1] == c[0]))):
                     clu_graph_edges.append(comb)
 
@@ -91,10 +92,4 @@ def create_cluster_graph(cluster,query):
 
     return Cluster_graph
 
-
-#-------- Test -----------
-'''
-cluster_test = create_cluster(H,K)
-c_graph = create_cluster_graph(cluster_test,query_test)
-'''
 

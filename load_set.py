@@ -1,8 +1,11 @@
+'''
+Starting from the cluster graph, it returns the load set for a certain machine and a particular quey
+'''
+
 import networkx as nx
 
 # It returns the load set for a machine k for a query with root q_t_root
 # using the head STwig (root) head, the query graph, the cluster graph and the list of machines
-# TODO: - maybe it's better to remove some parameters
 def create_load_set(k,q_t_root,head,query,cluster_graph,n_i):
 
     # Load set

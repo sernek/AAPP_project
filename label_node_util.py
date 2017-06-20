@@ -1,5 +1,7 @@
-#Gets as input the path to a file .net or .clu (without the fle extension)
-#and returns a dictionary with the label as key and its node as value
+'''Gets as input the path to a file .net or .clu (without the fle extension)
+and returns a dictionary with the label as key and its node as value
+'''
+
 def labelNodeDict( path ):
     
     count = 0
@@ -30,7 +32,3 @@ def labelNodeDict( path ):
                 
     return dic
 
-
-# -------Test----------    
-#dic = labelNodeDict("./Wordnet/wordnet3")
-#print len(dic["1"])
